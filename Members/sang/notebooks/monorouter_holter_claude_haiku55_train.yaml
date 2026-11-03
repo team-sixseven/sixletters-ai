@@ -1,0 +1,21 @@
+models:
+- ~anthropic/claude-haiku-5-5
+experiment:
+  split: train
+  sample_size: null
+  sample_seed: 42
+  threshold: 0.5
+  run_live: true
+clinical:
+  method_validation_confirmed: true
+  chunk_seconds: 300
+  context_seconds: 2
+  min_rr_ms: 300
+  max_rr_ms: 2000
+  relative_limit: 0.2
+  sdann_min_coverage: 0.8
+  hourly_min_coverage: 0.5
+api:
+  max_completion_tokens: 1024
+  reasoning_effort: low
+  timeout_seconds: 90

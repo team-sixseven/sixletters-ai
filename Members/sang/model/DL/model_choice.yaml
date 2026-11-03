@@ -1,2 +1,2 @@
-cnn_model: ResNet
-sequence_model: BiLSTM
+cnn_model: TCN
+sequence_model: transformer_enc

@@ -54,6 +54,17 @@ def test_drive_relative_config_paths(tmp_path):
         load_basic_config(path)
 
 
+def test_drive_root_resolves_relative_to_config(tmp_path):
+    path = tmp_path / "configs" / "basic.yaml"
+    path.parent.mkdir()
+    write_yaml(
+        path, {"drive_root": "../data", "data": {"clinical": {"path": "drive://clinical.csv"}}}
+    )
+    assert load_basic_config(path)["data"]["clinical"]["path"] == str(
+        tmp_path / "data" / "clinical.csv"
+    )
+
+
 @pytest.fixture
 def raw_setup(tmp_path):
     wave = tmp_path / "wave"
@@ -552,7 +563,11 @@ def test_notebook_automatically_logs_training_and_final_evaluation(
     namespace = {"display": lambda *_: None}
     for cell in content.cells:
         if cell.cell_type == "code":
-            exec(compile(cell.source, notebook, "exec"), namespace)
+            source = cell.source
+            if notebook.startswith("DL/"):
+                # Exercise the optional test branch regardless of the notebook default.
+                source = source.replace("run_final_test = False", "run_final_test = True")
+            exec(compile(source, notebook, "exec"), namespace)
     if notebook.startswith("DL/"):
         assert trained == [choice_path]
         assert [split for split, _ in evaluated] == ["test"]
@@ -613,7 +628,7 @@ def test_automatic_feature_dimensions_and_activations(raw_setup, activation, seq
     training["classifier"].update(hidden_dim=11, activation=activation)
     write_yaml(paths["training"], training)
     model = build_composed_model(
-        choice | {"sequence_model": sequence}, basic, choice_path=choice_path
+        choice | {"cnn_model": "ResNet", "sequence_model": sequence}, basic, choice_path=choice_path
     ).eval()
     assert model.encoder.output_dim == 10
     assert model.sequence.feature_dim == (12 if sequence == "transformer_enc" else 14)
@@ -647,7 +662,7 @@ def test_experiment_yaml_has_no_registry_or_shape_fields():
     for path in paths:
         inspect(load_yaml(MODEL / "DL" / path))
     assert set(load_yaml(MODEL / "DL/model_choice.yaml")) == {"cnn_model", "sequence_model"}
-    basic = load_yaml(MODEL / "basic.yaml")
+    basic = load_basic_config(MODEL / "basic.yaml")
     assert "leads" not in basic["data"]["ecg"]
     assert "samples_per_window" not in basic["data"]["ecg"]
 

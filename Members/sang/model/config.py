@@ -86,6 +86,8 @@ def load_basic_config(path: Path) -> dict[str, Any]:
 
     config = merge(_BASIC_DEFAULTS, load_yaml(path))
     root_value = config.get("drive_root")
+    config_path = path.resolve() if path.is_absolute() else (REPO_ROOT / path).resolve()
+    drive_root = resolve_config_path(root_value, config_path) if root_value else None
     path_fields = {
         "clinical": ("path",),
         "split": ("path",),
@@ -97,11 +99,11 @@ def load_basic_config(path: Path) -> dict[str, Any]:
             value = values.get(field)
             if isinstance(value, str) and value.startswith("drive://"):
                 relative = Path(value.removeprefix("drive://"))
-                if not root_value or not Path(root_value).is_absolute():
-                    raise ValueError("drive:// paths require an absolute drive_root")
+                if drive_root is None:
+                    raise ValueError("drive:// paths require drive_root")
                 if not relative.parts or relative.is_absolute() or ".." in relative.parts:
                     raise ValueError(f"Invalid drive-relative path: {value}")
-                values[field] = str(Path(root_value) / relative)
+                values[field] = str(drive_root / relative)
     return config
 
 
