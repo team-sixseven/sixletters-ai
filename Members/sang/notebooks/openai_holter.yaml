@@ -4,8 +4,8 @@ models:
   - gpt-6.1-terra
 
 experiment:
-  split: development
-  sample_size: null       # 개발 원본 전체(356명). 숫자를 넣으면 시드 고정 예비 표본
+  split: all
+  sample_size: null       # all은 원본 전체(445명), development는 train·validation 356명
   sample_seed: 42
   reuse_predictions_dir: null
   reuse_features_file: null
@@ -27,3 +27,4 @@ api:
   max_completion_tokens: 1024
   reasoning_effort: low   # low/medium/high, null이면 요청에서 생략합니다.
   timeout_seconds: 90
+  max_attempts: 3         # 모델이 null/범위 밖 값을 답하면 같은 요청을 최대 3회까지 시도합니다.

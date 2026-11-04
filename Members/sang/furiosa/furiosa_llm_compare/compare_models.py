@@ -1,4 +1,4 @@
-"""Run one Furiosa model on the fixed 356-patient comparison inputs."""
+"""Run one Furiosa model on the fixed comparison inputs (356 development or all 445 patients)."""
 
 import argparse
 import csv
@@ -6,7 +6,7 @@ import hashlib
 import io
 import json
 import time
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from furiosa_llm import LLM, SamplingParams
@@ -74,10 +74,12 @@ def main(args):
     data = json.loads(raw)
     patients = data["patients"]
     by = {r["patient_id"]: r for r in patients}
-    if len(patients) != 356 or len(by) != 356:
+    expected = 445 if args.cohort == "all" else 356
+    allowed = ("train", "validation", "test") if args.cohort == "all" else ("train", "validation")
+    if len(patients) != expected or len(by) != expected:
         raise ValueError("cohort mismatch")
     for r in patients:
-        if r["original_split"] not in ("train", "validation") or r["fold"] not in (1, 2, 3, 4, 5):
+        if r["original_split"] not in allowed or r["fold"] not in (1, 2, 3, 4, 5):
             raise ValueError("invalid fold")
         if len(r["example_patient_ids"]) != 4 or any(
             i not in by or by[i]["fold"] == r["fold"] for i in r["example_patient_ids"]
@@ -96,7 +98,7 @@ def main(args):
         "template": cfg["template"],
         "structured_output": "json_schema",
         "input_sha256": hashlib.sha256(raw).hexdigest(),
-        "created_utc": datetime.now(UTC).isoformat(),
+        "created_utc": datetime.now(timezone.utc).isoformat(),
         "input_metadata": data["metadata"],
         "caveat": "research only; outputs uncalibrated; comparison uses previously examined development data",
     }
@@ -200,4 +202,5 @@ if __name__ == "__main__":
     p.add_argument("--model", choices=MODELS, required=True)
     p.add_argument("--input", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--cohort", choices=("development", "all"), default="development")
     main(p.parse_args())

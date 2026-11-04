@@ -20,7 +20,10 @@ VERSION_NAMES = {"clinical_holter": "임상 + Holter", "holter_only": "Holter만
 
 def make_table(run_dir, metrics, valid):
     n_pos, n_neg = int((valid["y_true"] == 1).sum()), int((valid["y_true"] == 0).sum())
-    detected, missed = int(metrics["positive_detected"]), int(metrics["positive_missed"])
+    detected, missed = (
+        int(metrics["positive_detected"]),
+        int(metrics["positive_missed"]),
+    )
     false_pos, true_neg = int(metrics["false_positive"]), int(metrics["true_negative"])
 
     def spread(label):
@@ -32,7 +35,10 @@ def make_table(run_dir, metrics, valid):
         ["평가 대상", f"test {len(valid)}명 (양성 {n_pos} / 음성 {n_neg})"],
         ["AUROC", f"{metrics['auroc']:.3f}"],
         ["AP (평균 정밀도)", f"{metrics['average_precision']:.3f}"],
-        [f"양성 탐지 (기준 {metrics['threshold']})", f"{detected} / {detected + missed}"],
+        [
+            f"양성 탐지 (기준 {metrics['threshold']})",
+            f"{detected} / {detected + missed}",
+        ],
         ["거짓 양성", f"{false_pos} / {false_pos + true_neg}"],
         ["양성 점수 (최소/중앙/최대)", spread(1)],
         ["음성 점수 (최소/중앙/최대)", spread(0)],
@@ -65,9 +71,19 @@ def make_histogram(run_dir, metrics, valid):
     upper = max(threshold + 0.1, float(valid["p_positive"].max()) + 0.05)
     bins = np.arange(0, upper + 0.05, 0.05)
     fig, ax = plt.subplots(figsize=(8, 4.5))
-    for label, color, name in [(0, NEGATIVE_COLOR, "실제 음성"), (1, POSITIVE_COLOR, "실제 양성")]:
+    for label, color, name in [
+        (0, NEGATIVE_COLOR, "실제 음성"),
+        (1, POSITIVE_COLOR, "실제 양성"),
+    ]:
         values = valid.loc[valid["y_true"] == label, "p_positive"].astype(float)
-        ax.hist(values, bins=bins, alpha=0.65, color=color, edgecolor="white", label=f"{name} (n={len(values)})")
+        ax.hist(
+            values,
+            bins=bins,
+            alpha=0.65,
+            color=color,
+            edgecolor="white",
+            label=f"{name} (n={len(values)})",
+        )
     ax.axvline(threshold, color="black", linestyle="--", label=f"기준 {threshold}")
     ax.set(
         xlabel="Jev 점수 (양성 확률)",

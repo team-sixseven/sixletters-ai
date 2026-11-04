@@ -1,7 +1,7 @@
 models:
 - ~anthropic/claude-haiku-5-5
 experiment:
-  split: train
+  split: all
   sample_size: null
   sample_seed: 42
   threshold: 0.5

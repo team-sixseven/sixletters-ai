@@ -42,7 +42,9 @@ def main(args):
     source = json.loads(args.holter.read_text())
     features = source["records"]
     records = []
-    for _, r in split[split["split"].isin(["train", "validation"])].iterrows():
+    allowed = ["train", "validation", "test"] if args.cohort == "all" else ["train", "validation"]
+    expected = 445 if args.cohort == "all" else 356
+    for _, r in split[split["split"].isin(allowed)].iterrows():
         pid = r["pid"]
         label = r["SCD"]
         group = r["split"]
@@ -72,11 +74,12 @@ def main(args):
             }
         )
     records.sort(key=lambda x: x["patient_id"])
-    if len(records) != 356 or len({r["patient_id"] for r in records}) != 356:
-        raise ValueError("development cohort mismatch")
-    assert {r["patient_id"] for r in records}.isdisjoint(
-        set(split.loc[split["split"] == "test", "pid"])
-    )
+    if len(records) != expected or len({r["patient_id"] for r in records}) != expected:
+        raise ValueError("cohort mismatch")
+    if args.cohort != "all":
+        assert {r["patient_id"] for r in records}.isdisjoint(
+            set(split.loc[split["split"] == "test", "pid"])
+        )
     y = np.asarray([r["label"] for r in records])
     X = np.asarray([[r["clinical"][k] for k in MODEL_4] for r in records])
     fold_sizes = []
@@ -124,7 +127,11 @@ def main(args):
         ):
             raise ValueError("example fold leakage")
     metadata = {
-        "split": "5-fold stratified CV of original train+validation; original test excluded",
+        "split": (
+            "5-fold stratified CV of all original patients (train+validation+test)"
+            if args.cohort == "all"
+            else "5-fold stratified CV of original train+validation; original test excluded"
+        ),
         "seed": 42,
         "fold_sizes": fold_sizes,
         "n_patients": len(records),
@@ -157,4 +164,5 @@ if __name__ == "__main__":
     p.add_argument("--split", type=Path, required=True)
     p.add_argument("--holter", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--cohort", choices=("development", "all"), default="development")
     main(p.parse_args())
