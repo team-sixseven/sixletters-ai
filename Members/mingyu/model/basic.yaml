@@ -1,0 +1,25 @@
+drive_root: /home/aiuser/sixletters-poc/Members/mingyu/datas/DATA  # ← 본인 데이터 폴더 (절대경로). 아래 drive:// 경로는 모두 이 폴더 기준
+data:
+  clinical:
+    path: drive://clincal/clinical_clean_4year_holter_max.csv
+    id_column: Patient ID
+    label_column: SCD
+    target_semantics: SCD within four years after Holter recording, as described in Drive ECG_tem README
+  split:
+    path: drive://final_split_ml_max.csv
+  raw_ecg:
+    # DL(MOMENT) 입력: preprocessing/02의 OUT_DIR을 <drive_root>/ECG_tem 으로 두면 그대로 맞음
+    split_path: drive://ECG_tem/final_split_augmented.csv  # finetuning/01_make_augmented_split.py가 만듦 (445명 + train SCD 증강 64 = 509줄)
+    wave_directory: drive://ECG_tem/clean_signal  # 02의 정제 신호 .npy (이전 로컬 실행: drive://ECG_tem_653/ECG_tem_clean/clean_signal)
+    sample_rate_hz: 200
+    source_metadata_confirmed: true
+    segment_seconds: 30
+    normalization: per_window_per_lead_zscore  # 기존: none
+    quality_index_path: drive://ECG_tem/segment_rpeaks.csv  # 02의 30초 조각 제외 표시
+    quality_index_format: drive_segment_rpeaks
+    lead_metadata_path: drive://ECG_tem/lead_info.csv  # 02의 유도 정보 (팀 Drive 이름: ECG_tem/ECG_tem_clean.csv, 내용 같음)
+    target_semantics: SCD within four years after Holter recording, as described in Drive ECG_tem README
+dl:
+  positive_class_weight: train_negatives_divided_by_train_positives
+outputs:
+  dl_model_directory: DL/models
