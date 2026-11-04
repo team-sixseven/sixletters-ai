@@ -1,0 +1,9 @@
+# RunPod Serverless image (CPU is enough)
+FROM python:3.12-slim
+WORKDIR /app
+COPY model_ml/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt "runpod==1.7.*"
+COPY model_ml/handler.py ./
+COPY model_ml/model.joblib model_ml/model.joblib
+COPY model_total_process/total_flow.py model_total_process/total_flow.py
+CMD ["python", "-u", "handler.py"]

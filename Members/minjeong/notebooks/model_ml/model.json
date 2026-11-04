@@ -1,0 +1,131 @@
+{
+  "model": "LR_core_iterative_only445",
+  "description": "SCD risk, logistic regression on 12 clinical + Holter variables (PPT p.36)",
+  "features": [
+    "Age",
+    "Gender (male=1)",
+    "NYHA class",
+    "LVEF (%)",
+    "Left atrial size (mm)",
+    "eGFR",
+    "Pro-BNP (ng/L)",
+    "Ischemic etiology",
+    "Prior Myocardial Infarction (yes=1)",
+    "Holter ventricular premature beats in 24h",
+    "Holter ventricular couplets",
+    "Holter NSVT (yes=1)"
+  ],
+  "log1p_features": [
+    "Pro-BNP (ng/L)",
+    "Holter ventricular premature beats in 24h",
+    "Holter ventricular couplets"
+  ],
+  "terms": [
+    {
+      "feature": "Pro-BNP (ng/L)",
+      "log1p": true,
+      "mean": 6.465655793833288,
+      "scale": 1.2843570445138934,
+      "coef": 0.21989851902931984
+    },
+    {
+      "feature": "Holter ventricular premature beats in 24h",
+      "log1p": true,
+      "mean": 5.439789657117917,
+      "scale": 2.5334289765195055,
+      "coef": 0.16095930670968756
+    },
+    {
+      "feature": "Holter ventricular couplets",
+      "log1p": true,
+      "mean": 1.5954725124243598,
+      "scale": 1.9884125040234713,
+      "coef": 0.12949842206587278
+    },
+    {
+      "feature": "Age",
+      "log1p": false,
+      "mean": 62.91011235955056,
+      "scale": 11.189773068998761,
+      "coef": 0.053651307956832296
+    },
+    {
+      "feature": "Gender (male=1)",
+      "log1p": false,
+      "mean": 0.7162921348314607,
+      "scale": 0.4507967528832137,
+      "coef": 0.08617539707385624
+    },
+    {
+      "feature": "NYHA class",
+      "log1p": false,
+      "mean": 2.168539325842697,
+      "scale": 0.3743445224484872,
+      "coef": 0.17986776738010135
+    },
+    {
+      "feature": "LVEF (%)",
+      "log1p": false,
+      "mean": 40.07022471910113,
+      "scale": 13.637485968645649,
+      "coef": -0.13514026983103686
+    },
+    {
+      "feature": "Left atrial size (mm)",
+      "log1p": false,
+      "mean": 44.93539325842696,
+      "scale": 7.82309926747185,
+      "coef": 0.17458475677104643
+    },
+    {
+      "feature": "eGFR",
+      "log1p": false,
+      "mean": 65.13126551173251,
+      "scale": 17.522219036834343,
+      "coef": 0.023394696662231276
+    },
+    {
+      "feature": "Ischemic etiology",
+      "log1p": false,
+      "mean": 0.449438202247191,
+      "scale": 0.4974369353073855,
+      "coef": 0.10492995222717848
+    },
+    {
+      "feature": "Prior Myocardial Infarction (yes=1)",
+      "log1p": false,
+      "mean": 0.41292134831460675,
+      "scale": 0.4923589223530471,
+      "coef": 0.15390349298023084
+    },
+    {
+      "feature": "Holter NSVT (yes=1)",
+      "log1p": false,
+      "mean": 0.29213483146067415,
+      "scale": 0.4547439628055744,
+      "coef": 0.10726382189516903
+    }
+  ],
+  "intercept": -0.3399619853817614,
+  "threshold": 0.5,
+  "probability": "uncalibrated model output (class_weight=balanced)",
+  "hyperparameters": {
+    "C": 0.01,
+    "class_weight": "balanced"
+  },
+  "n_train": 356,
+  "train_population": "original 445 cohort, development split (356 patients, no missing values)",
+  "test": {
+    "n": 89,
+    "auroc": 0.834,
+    "auroc_ci": [
+      0.69,
+      0.944
+    ],
+    "average_precision": 0.371
+  },
+  "trained_with": {
+    "python": "3.12.12",
+    "scikit-learn": "1.9.1"
+  }
+}

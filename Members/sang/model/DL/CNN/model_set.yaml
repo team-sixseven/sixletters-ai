@@ -1,8 +1,0 @@
-models:
-  ResNet:
-    activation: GELU
-  InceptionTime:
-    modules: 3
-    activation: GELU
-  TCN:
-    activation: GELU

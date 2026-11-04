@@ -85,3 +85,14 @@ Global/artifacts/**
 
 # Member model storage (implementation code belongs in experiments/)
 /Members/*/models/
+
+# The minjeong ECG model implementation is source code; keep local outputs private.
+!/Members/minjeong/models/
+/Members/minjeong/models/.venv/
+/Members/minjeong/models/__pycache__/
+/Members/minjeong/models/runs/
+/Members/minjeong/models/audit_report.json
+!/Members/minjeong/models/config.example.json
+!/Members/minjeong/models/config.run_8gb.json
+!/Members/minjeong/models/v2/config.run_8gb.json
+!/Members/minjeong/models/v3/config.run_8gb.json

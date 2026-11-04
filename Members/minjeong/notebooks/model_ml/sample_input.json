@@ -1,0 +1,14 @@
+{
+  "Age": 65,
+  "Gender (male=1)": 1,
+  "NYHA class": 2,
+  "LVEF (%)": 30,
+  "Left atrial size (mm)": 48,
+  "eGFR": 60,
+  "Pro-BNP (ng/L)": 1500,
+  "Ischemic etiology": 1,
+  "Prior Myocardial Infarction (yes=1)": 1,
+  "Holter ventricular premature beats in 24h": 800,
+  "Holter ventricular couplets": 10,
+  "Holter NSVT (yes=1)": 1
+}
