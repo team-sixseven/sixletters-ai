@@ -16,8 +16,18 @@ from tqdm.auto import tqdm
 from .data import load_cohorts
 from .DL.composed import MODEL_FORMAT_VERSION, build_composed_model_from_specs
 from .DL.dataloader.dataset import PatientWindowDataset, collate_patient_windows
-from .ML.artifacts import load_ml_run as load_ml_run
-from .ML.artifacts import predict_ml_run as predict_ml_run
+
+
+def load_ml_run(*args, **kwargs):
+    from .ML.artifacts import load_ml_run as implementation
+
+    return implementation(*args, **kwargs)
+
+
+def predict_ml_run(*args, **kwargs):
+    from .ML.artifacts import predict_ml_run as implementation
+
+    return implementation(*args, **kwargs)
 
 
 def _metadata(path: Path) -> dict[str, Any]:

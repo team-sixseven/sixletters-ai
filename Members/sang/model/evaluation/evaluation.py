@@ -15,7 +15,6 @@ import yaml
 
 from ..config import load_experiment_config, load_yaml, resolve_config_path
 from ..data import load_cohorts, write_audit
-from ..ML.artifacts import configured_model_run, predict_ml_run
 from ..tracking.log_evaluation import finish_evaluation
 from .core import binary_metrics, validate_threshold
 
@@ -57,6 +56,8 @@ def evaluate_saved_model(
     if explicit_override is not None:
         explicit_override = validate_threshold(explicit_override)
     target = evaluation["target"]
+    if target in {"ml", "fusion"}:
+        raise ValueError("Clinical ML and fusion are not included in this submission")
     output_base = resolve_config_path(evaluation["results_directory"], config_path)
     if target == "fusion":
         from ..fusion import run_fusion
@@ -90,6 +91,8 @@ def evaluate_saved_model(
     elif artifact_path:
         artifact_dir = resolve_config_path(artifact_path, config_path)
     elif target == "ml":
+        from ..ML.artifacts import configured_model_run
+
         model_name = evaluation.get("model_name")
         choice_path = Path(__file__).resolve().parents[1] / "ML/model_choice.yaml"
         if evaluation.get("model_choice"):
@@ -130,6 +133,8 @@ def evaluate_saved_model(
     if patients.empty:
         raise ValueError(f"No {target.upper()} patients are available in {split_name}")
     if target == "ml":
+        from ..ML.artifacts import predict_ml_run
+
         probabilities, metadata = predict_ml_run(artifact_dir, patients)
     elif raw_dl:
         probabilities, metadata, raw_usage = predict_raw_dl_run(

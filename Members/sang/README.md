@@ -11,17 +11,16 @@
 
 환자 데이터·분할·체크포인트·환자별 예측과 생성 차트는 Git에서 제외한다. 노트북 출력은 환자 정보가 포함될 수 있어 제출본에서 비웠다. `model/basic.yaml`의 `drive_root`는 해당 YAML을 기준으로 `../datas`이며, 다른 데이터 위치를 사용하는 환경에서는 이를 수정한다. 모델·결과 폴더가 없는 새 환경에서는 해당 아티팩트를 별도로 준비해야 한다. 일부 과거 실행 노트북과 기록은 당시 서버 경로를 포함한다.
 
-임상 ML, Holter DL, 저장 모델 확률 결합과 공통 평가 코드는 [`model/README.md`](model/README.md)에 있습니다. 입력 원본 CSV·NPY는 수정하거나 복사하지 않습니다.
+Holter DL과 공통 평가 코드는 [`model/README.md`](model/README.md)에 있습니다. 임상 ML 모델 코드와 ML·DL 결합 실행은 이 제출에 포함하지 않습니다. 입력 원본 CSV·NPY는 수정하거나 복사하지 않습니다.
 
 저장소 루트에서 실행:
 
 ```bash
-uv run --project Global --extra ml python Members/sang/scripts/audit_model_data.py
-uv run --project Global --extra ml python Members/sang/scripts/evaluate_preprocessed_clinical.py
+uv run --project Global python Members/sang/scripts/audit_model_data.py
 uv run --project Global --extra gpu python Members/sang/scripts/evaluate_ecg_architectures.py
 uv run --project Global python -m Members.sang.model.evaluation.evaluation
 ```
 
-공통 설정은 `model/basic.yaml`이 관리합니다. 임상은 `model/ML/data/clinical_clean.csv`와 `model/ML/data/final_split.csv`를 환자 ID로 join합니다 (`final_split.csv`의 `val`은 validation으로 매핑). Holter는 `datas/Holter/windows/{pid}.npy`와 `datas/Holter/index/windows.csv.gz`의 row/SQI 정보를 사용합니다. 현재 확인된 환자 수, modality별 사용 환자, 라벨 분포, 제외 사유는 audit 결과와 [`model/README.md`](model/README.md)에 기록합니다.
+공통 설정은 `model/basic.yaml`이 관리합니다. Holter 입력과 데이터 감사에 관한 설명은 [`model/README.md`](model/README.md)에 기록합니다.
 
 P1030은 NPY 입력·전처리·CNN+LSTM/Transformer forward 확인에 사용합니다. 임상 라벨이 없으므로 supervised 학습·성능 계산에는 사용하지 않습니다. 과거 더미 실험과 이전 split 비교는 `docs/`의 이력이며, 현재 `final_split.csv` 기반 성능 결과로 간주하지 않습니다.

@@ -20,8 +20,8 @@ from Members.sang.experiments.monorouter_holter.clinical_features import (  # no
     read_feature_cache,
     select_development,
 )
+from Members.sang.furiosa.furiosa_llm_compare.clinical_feature_versions import MODEL_4  # noqa: E402
 from Members.sang.model.config import load_basic_config  # noqa: E402
-from Members.sang.model.ML.feature_versions import MODEL_4  # noqa: E402
 
 
 def main(output):

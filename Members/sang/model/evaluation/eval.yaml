@@ -1,6 +1,6 @@
 basic_config: ../basic.yaml
 evaluation:
-  target: fusion  # fusion : ECG + clinical; ml : ML only(clincal); dl : DL only (ECG)
+  target: dl  # Clinical ML and fusion are excluded from this submission.
   fusion_config: ../fusion.yaml
   model_name: XGBoost  # Used for ML when artifact_dir is null.
   model_version: null  # ML: 1-4 for a saved input set; null uses the latest model_path.

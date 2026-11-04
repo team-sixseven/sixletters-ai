@@ -1,5 +1,7 @@
 # SCD model workflow
 
+> 임상 ML 모델 코드는 이 제출에서 제외했습니다. 아래 ML 학습·평가 및 ML과 DL 결합 방법은 이 제출만으로 실행할 수 없습니다. DL과 LLM 실험 관련 설명은 유지합니다.
+
 This directory provides one configuration-driven workflow for clinical ML, Holter DL, saved-model fusion, and evaluation. Notebooks call the same Python modules as the command line. Data files are read-only; generated models, audits, and predictions stay local.
 
 ```text
