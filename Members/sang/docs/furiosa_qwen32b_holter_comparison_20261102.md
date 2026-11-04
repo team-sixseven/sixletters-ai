@@ -26,6 +26,6 @@
 
 ## 재현과 산출물
 
-입력: `Members/sang/experiments/furiosa_llm_compare/prepare.py` (로컬 기존 특징 캐시의 코드·경로·설정·메타데이터 무결성 키를 확인). 서버 실행: `run_server.py`; 모델·조건·입력 SHA-256·설정은 결과 metadata에 저장. 서버 결과 및 노트북: `/root/.cache/std3_holter/llm_compare/run_20261102/`와 `/root/.cache/std3_holter/llm_compare/furiosa_qwen32b_comparison.ipynb`. 환자별 CSV와 입력에는 개인 정보가 있으므로 비공개로 보관한다. 집계 JSON 사본: `Members/sang/results/furiosa_llm_compare/run_20261102/`.
+입력: `Members/sang/furiosa/furiosa_llm_compare/prepare.py` (로컬 기존 특징 캐시의 코드·경로·설정·메타데이터 무결성 키를 확인). 서버 실행: `run_server.py`; 모델·조건·입력 SHA-256·설정은 결과 metadata에 저장. 서버 결과 및 노트북: `/root/.cache/std3_holter/llm_compare/run_20261102/`와 `/root/.cache/std3_holter/llm_compare/furiosa_qwen32b_comparison.ipynb`. 환자별 CSV와 입력에는 개인 정보가 있으므로 비공개로 보관한다. 집계 JSON 사본: `Members/sang/results/furiosa_llm_compare/run_20261102/`.
 
 남은 일: 임상 측정 시점·SCD 라벨 불일치 원인 확인, 사례 선택 및 임상 변수 제공의 사전 정의, 독립 환자 집단에서 확률 보정 및 외부 검증. 이번 validation 결과를 보고 개선을 반복하면 해당 validation도 선택에 사용된 데이터가 된다.

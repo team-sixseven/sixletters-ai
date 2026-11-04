@@ -1,0 +1,29 @@
+# 실행할 모델을 선택합니다. OpenAI API 모델 ID를 사용합니다. 목록의 모델이 같은 환자 표본을 사용합니다.
+# gpt-6.1-terra는 제3자 문서로 확인한 ID이므로, 호출 전 노트북이 /v1/models 목록에서 존재를 확인합니다.
+models:
+  - gpt-6.1-terra
+
+experiment:
+  split: development
+  sample_size: null       # 개발 원본 전체(356명). 숫자를 넣으면 시드 고정 예비 표본
+  sample_seed: 42
+  reuse_predictions_dir: null
+  reuse_features_file: null
+  threshold: 0.5
+  run_live: true         # true로 바꾸면 Holter 요약 특징이 외부 OpenAI API로 전송되고 비용이 발생합니다.
+
+clinical:
+  method_validation_confirmed: true  # monorouter_holter.yaml의 기존 확인값과 같음
+  chunk_seconds: 300
+  context_seconds: 2
+  min_rr_ms: 300
+  max_rr_ms: 2000
+  relative_limit: 0.2
+  sdann_min_coverage: 0.8   # 연구용 가정, 공식 표준 기준 아님
+  hourly_min_coverage: 0.5  # 연구용 가정, 공식 표준 기준 아님
+
+api:
+  # 모델의 추론 토큰과 출력 토큰을 함께 제한합니다.
+  max_completion_tokens: 1024
+  reasoning_effort: low   # low/medium/high, null이면 요청에서 생략합니다.
+  timeout_seconds: 90

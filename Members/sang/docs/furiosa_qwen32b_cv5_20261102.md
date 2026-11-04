@@ -24,4 +24,4 @@ Fold별 AUROC는 Holter `[0.370,0.601,0.497,0.403,0.551]`, 임상 추가 `[0.685
 
 ## 코드·산출물
 
-`Members/sang/experiments/furiosa_llm_compare/prepare_cv.py`와 `run_cv.py`에서 각각 입력 생성과 실행을 담당한다. 서버의 입력·환자별 출력은 `/root/.cache/std3_holter/llm_compare/` 아래 비공개로 보관한다. 서버 결과는 `run_20261102_cv5/`, 노트북은 `furiosa_qwen32b_cv5.ipynb`다. 집계 JSON 사본은 로컬 `Members/sang/results/furiosa_llm_compare/run_20261102_cv5/`에 있다.
+`Members/sang/furiosa/furiosa_llm_compare/prepare_cv.py`와 `run_cv.py`에서 각각 입력 생성과 실행을 담당한다. 서버의 입력·환자별 출력은 `/root/.cache/std3_holter/llm_compare/` 아래 비공개로 보관한다. 서버 결과는 `run_20261102_cv5/`, 노트북은 `furiosa_qwen32b_cv5.ipynb`다. 집계 JSON 사본은 로컬 `Members/sang/results/furiosa_llm_compare/run_20261102_cv5/`에 있다.

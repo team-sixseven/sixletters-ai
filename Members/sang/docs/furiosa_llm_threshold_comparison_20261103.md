@@ -78,7 +78,7 @@
 
 ## 재현 및 검증
 
-- 재현 코드: `Members/sang/experiments/furiosa_llm_compare/threshold_comparison.py`.
+- 재현 코드: `Members/sang/furiosa/furiosa_llm_compare/threshold_comparison.py`.
 - 환자별 원본은 Furiosa 서버에 유지하며 집계 JSON만 `Members/sang/results/furiosa_llm_compare/threshold_comparison_20261103.json`에 저장했다.
 - 네 모델 × 네 조건의 데이터 356건씩, 양성 40건, 환자 및 라벨 일치, 점수 유한성과 범위, 이전 50% 혼동행렬 일치를 검사했다.
 - 모델 설정, 환자 분리, 사례 선택과 기존 성능은 [모델 비교 결과](furiosa_three_llm_comparison_20261103.md)를 참고한다.
@@ -91,4 +91,4 @@
 
 여러 조건에서 특정 점수 구간에 양성과 음성이 함께 몰려 있다. 이런 경우 기준을 조금만 바꿔도 한 번에 많은 환자의 판정이 바뀔 수 있다. 그래프는 점수 분포를 보여주며, 검증된 실제 SCD 발생 확률을 보여주는 것은 아니다.
 
-분포도 생성 코드: `Members/sang/experiments/furiosa_llm_compare/plot_score_distributions.py`. 16개 그래프에서 환자 일치, 양성 40명·음성 316명의 구간 합계, 50% 이상 TP/FP가 기존 집계와 같은지 확인했다. 환자별 예측값은 서버 밖으로 내보내지 않았다.
+분포도 생성 코드: `Members/sang/furiosa/furiosa_llm_compare/plot_score_distributions.py`. 16개 그래프에서 환자 일치, 양성 40명·음성 316명의 구간 합계, 50% 이상 TP/FP가 기존 집계와 같은지 확인했다. 환자별 예측값은 서버 밖으로 내보내지 않았다.

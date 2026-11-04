@@ -51,7 +51,7 @@ AP는 양성 비율이 낮을 때 참고할 정밀도-재현율 요약이다. �
 ## 재현과 파일
 
 - 서버 결과와 개인별 예측: `/root/.cache/std3_holter/llm_compare/run_20261103_{gpt_oss,qwen_moe,exaone}`. 개인별 출력은 서버에만 둔다.
-- 실행 및 집계 코드: `Members/sang/experiments/furiosa_llm_compare/compare_models.py`, `aggregate_models.py`.
-- 결과 확인 노트북: `Members/sang/notebooks/furiosa_three_llm_comparison.ipynb`. 서버 커널 `furiosa-holter`에서 전체 실행을 확인했다.
+- 실행 및 집계 코드: `Members/sang/furiosa/furiosa_llm_compare/compare_models.py`, `aggregate_models.py`.
+- 결과 확인 노트북: `Members/sang/furiosa/notebooks/furiosa_three_llm_comparison.ipynb`. 서버 커널 `furiosa-holter`에서 전체 실행을 확인했다.
 - 집계 결과: `Members/sang/results/furiosa_llm_compare/multimodel_aggregate_20261103.json`. 환자별 예측을 제외한 각 모델 메타데이터와 지표도 같은 디렉터리에 보관한다.
 - `furiosa-llm` 2026.4.0. 각 모델 입력 SHA-256과 장치·조건은 메타데이터 참조.
