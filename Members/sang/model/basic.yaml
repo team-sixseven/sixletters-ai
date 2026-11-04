@@ -1,0 +1,24 @@
+drive_root: ../datas
+data:
+  clinical:
+    path: drive://fusion_scd4y_20261030T010403Z_fa73f2/clinical_4year.csv
+    id_column: Patient ID
+    label_column: SCD
+    target_semantics: SCD within four years after Holter recording, as described in Drive ECG_tem README
+  split:
+    path: drive://fusion_scd4y_20261030T010403Z_fa73f2/patient_split_4year.csv
+  raw_ecg:
+    split_path: drive://Holter/final_split_augmented.csv
+    wave_directory: drive://Holter/windows
+    sample_rate_hz: 200
+    source_metadata_confirmed: true
+    segment_seconds: 30
+    normalization: none
+    quality_index_path: drive://Holter/segment_rpeaks.csv
+    quality_index_format: drive_segment_rpeaks
+    lead_metadata_path: drive://Holter/ECG_tem_clean.csv
+    target_semantics: SCD within four years after Holter recording, as described in Drive ECG_tem README
+dl:
+  positive_class_weight: train_negatives_divided_by_train_positives
+outputs:
+  dl_model_directory: DL/models

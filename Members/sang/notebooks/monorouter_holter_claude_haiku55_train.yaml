@@ -1,0 +1,23 @@
+models:
+- ~anthropic/claude-haiku-5-5
+experiment:
+  split: all
+  sample_size: null
+  sample_seed: 42
+  threshold: 0.5
+  run_live: true
+  reuse_predictions_dir: Members/sang/results/monorouter_holter/20261104T061240Z_c3ebfc23
+  reuse_features_file: Members/sang/results/monorouter_holter/features_20261104T061239Z_49d29b14/features_by_patient.json
+clinical:
+  method_validation_confirmed: true
+  chunk_seconds: 300
+  context_seconds: 2
+  min_rr_ms: 300
+  max_rr_ms: 2000
+  relative_limit: 0.2
+  sdann_min_coverage: 0.8
+  hourly_min_coverage: 0.5
+api:
+  max_completion_tokens: 1024
+  reasoning_effort: low
+  timeout_seconds: 90

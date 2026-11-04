@@ -1,0 +1,2 @@
+cnn_model: TCN
+sequence_model: transformer_enc

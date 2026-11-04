@@ -1,0 +1,35 @@
+# 실행할 모델을 선택합니다. 목록의 모델이 같은 환자 표본을 사용합니다.
+models:
+  - ~openai/gpt-6-luna
+  # - ~openai/gpt-5.4-mini
+  # - ~openai/gpt-5.4
+  # - ~openai/gpt-5.5
+  # - ~anthropic/claude-sonnet-5
+  # - ~anthropic/claude-sonnet-4-6
+  # - ~anthropic/claude-opus-5
+  # - ~anthropic/claude-haiku-4.5
+
+experiment:
+  split: development
+  sample_size: null       # 개발 원본 전체
+  sample_seed: 42
+  reuse_predictions_dir: Members/sang/results/monorouter_holter/20261102T043914Z_3627c3c6
+  reuse_features_file: Members/sang/results/monorouter_holter/features_20261102T043510Z_405a31e2/features_by_patient.json
+  threshold: 0.5
+  run_live: true         # 실제 데이터 외부 전송·호출 비용 발생 시 true
+
+clinical:
+  method_validation_confirmed: true  # 새 지표 계산법 검증을 완료한 후에만 true
+  chunk_seconds: 300
+  context_seconds: 2
+  min_rr_ms: 300
+  max_rr_ms: 2000
+  relative_limit: 0.2
+  sdann_min_coverage: 0.8   # 연구용 가정, 공식 표준 기준 아님
+  hourly_min_coverage: 0.5  # 연구용 가정, 공식 표준 기준 아님
+
+api:
+  # 모델의 추론 토큰과 출력 토큰을 함께 제한합니다.
+  max_completion_tokens: 1024
+  reasoning_effort: low
+  timeout_seconds: 90

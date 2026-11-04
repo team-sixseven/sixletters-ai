@@ -1,0 +1,6 @@
+models:
+  Attention LSTM FCN:
+    activation: GELU
+    dropout: 0.0
+  BiLSTM:
+    dropout: 0.0

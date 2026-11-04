@@ -14,6 +14,7 @@ build/
 Thumbs.db
 .idea/
 .vscode/
+# Private tracking connection settings, account passwords, logs and local backups.
 .poc.local.toml
 .poc-cache/
 .poc-env.lock
@@ -32,6 +33,18 @@ Thumbs.db
 *.key
 
 # Patient-level data, split manifests and trained models stay local.
+/Members/*/datas/
+/Members/*/split_datas/
+/Members/*/results/
+/Members/*/model/outputs/
+/Members/*/model/reports/
+/Members/*/model/ML/models/
+/Members/*/model/DL/models/
+/Members/*/model/ML/data/*.csv
+/Members/*/model/DL/data/*.csv
+# Patient IDs and cohort assignments in local ECG pilot manifests/results.
+/Members/*/docs/ecg_*_download_manifest.json
+/Members/*/docs/ecg_*_model_comparison.json
 Global/data/**
 !Global/data/README.md
 Global/artifacts/**
