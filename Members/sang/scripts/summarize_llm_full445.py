@@ -80,7 +80,10 @@ def summarize(rows, expected):
 def subsets(rows, splits):
     """전체와 test 부분집합으로 나눈다. 환자 수는 코호트 기준(전체 445, test 89)이다."""
     test_rows = [r for r in rows if splits[r["patient_id"]] == "test"]
-    return {"all": (rows, len(splits)), "test": (test_rows, sum(v == "test" for v in splits.values()))}
+    return {
+        "all": (rows, len(splits)),
+        "test": (test_rows, sum(v == "test" for v in splits.values())),
+    }
 
 
 def main(args):

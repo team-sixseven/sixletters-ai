@@ -2,10 +2,11 @@
 
 import json
 import os
+import subprocess
 import sys
 import traceback
-import subprocess
 from pathlib import Path
+
 import optuna
 import yaml
 from optuna.trial import TrialState
@@ -13,9 +14,12 @@ from optuna.trial import TrialState
 base = Path("/workspace/dl_six")
 repo = base / "repo"
 sys.path[:0] = [str(repo), str(repo / "Members/sang/runpod/dl_optuna_search")]
-from Members.sang.runpod.dl_optuna_search.multi_study import COMBINATIONS, write_configs  # noqa: E402
 from Members.sang.model.DL.raw_pipeline import train_raw_ecg  # noqa: E402
 from Members.sang.model.evaluation.evaluation import evaluate_saved_model  # noqa: E402
+from Members.sang.runpod.dl_optuna_search.multi_study import (  # noqa: E402
+    COMBINATIONS,
+    write_configs,
+)
 
 os.umask(0o077)
 out = base / "six_search"
@@ -49,7 +53,7 @@ def render():
 
 def main():
     for round_index in range(1, 2):
-        for idx, (name, cnn, sequence) in enumerate(COMBINATIONS):
+        for name, cnn, sequence in COMBINATIONS:
             previous = state["combinations"].get(name, {})
             if previous.get("test_status") == "complete":
                 continue
@@ -63,12 +67,18 @@ def main():
                 load_if_exists=True,
             )
             completed = [t for t in study.trials if t.state == TrialState.COMPLETE]
-            eligible = [
-                t for t in completed if t.user_attrs.get("completed_epochs", 0) >= 60
-            ]
+            eligible = [t for t in completed if t.user_attrs.get("completed_epochs", 0) >= 60]
             if not eligible:
 
-                def objective(trial):
+                def objective(
+                    trial,
+                    name=name,
+                    round_index=round_index,
+                    completed=completed,
+                    folder=folder,
+                    cnn=cnn,
+                    sequence=sequence,
+                ):
                     state["combinations"][name] = {
                         "stage": "training",
                         "trial": trial.number,
@@ -76,14 +86,10 @@ def main():
                         "completed_trials": len(completed),
                     }
                     save()
-                    choice = write_configs(
-                        trial, folder, base / "snapshot", cnn, sequence, search
-                    )
+                    choice = write_configs(trial, folder, base / "snapshot", cnn, sequence, search)
                     cfg = yaml.safe_load((choice.parent / "training.yaml").read_text())
                     if cfg["max_segments_per_patient"] != 128:
-                        raise RuntimeError(
-                            "snapshot supports 128 selected segments only"
-                        )
+                        raise RuntimeError("snapshot supports 128 selected segments only")
                     run = train_raw_ecg(
                         choice,
                         run_id=f"trial_{trial.number:03d}",
@@ -91,13 +97,9 @@ def main():
                         mlflow_logging=False,
                     )
                     metadata = json.loads((run / "metadata.json").read_text())
-                    metrics = json.loads((run / "metrics.json").read_text())[
-                        "validation"
-                    ]
+                    metrics = json.loads((run / "metrics.json").read_text())["validation"]
                     trial.set_user_attr("run_dir", str(run))
-                    trial.set_user_attr(
-                        "completed_epochs", metadata["completed_epochs"]
-                    )
+                    trial.set_user_attr("completed_epochs", metadata["completed_epochs"])
                     trial.set_user_attr("best_epoch", metadata["best_epoch"])
                     print(
                         "FINISHED",
@@ -113,19 +115,13 @@ def main():
 
                 study.optimize(objective, n_trials=1, n_jobs=1)
                 completed = [t for t in study.trials if t.state == TrialState.COMPLETE]
-                eligible = [
-                    t
-                    for t in completed
-                    if t.user_attrs.get("completed_epochs", 0) >= 60
-                ]
+                eligible = [t for t in completed if t.user_attrs.get("completed_epochs", 0) >= 60]
             if not eligible:
                 state["combinations"][name] = {
                     "stage": "needs_60_epochs",
                     "test_status": "held",
                     "completed_trials": len(completed),
-                    "max_epochs": max(
-                        t.user_attrs["completed_epochs"] for t in completed
-                    ),
+                    "max_epochs": max(t.user_attrs["completed_epochs"] for t in completed),
                     "trial": completed[-1].number,
                     "run_dir": completed[-1].user_attrs["run_dir"],
                     "best_epoch": completed[-1].user_attrs["best_epoch"],

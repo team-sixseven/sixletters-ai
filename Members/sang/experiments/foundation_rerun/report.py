@@ -111,17 +111,12 @@ for slide, name, title, details in specs:
         and len(history) <= 100
     )
     m = data["splits"]["validation"] if name == "ecg_fm" else data["validation"]
-    assert (
-        len(rows) == m["n"]
-        and sum(int(r["scd_4year_label"]) for r in rows) == m["positive"]
-    )
+    assert len(rows) == m["n"] and sum(int(r["scd_4year_label"]) for r in rows) == m["positive"]
     c = m.get("confusion")
     tp = (
         int(c["tp"])
         if c
-        else sum(
-            int(r["scd_4year_label"]) and float(r["model_score"]) >= 0.5 for r in rows
-        )
+        else sum(int(r["scd_4year_label"]) and float(r["model_score"]) >= 0.5 for r in rows)
     )
     lines.append(
         f"| {title} | {details} | {len(history)} / {data['best_epoch']} | {m['auroc']:.3f} | {m['average_precision']:.3f} | {tp}/8 |"

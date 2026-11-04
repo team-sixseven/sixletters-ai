@@ -2,11 +2,12 @@
 
 import csv
 import hashlib
+import io
 import json
 import tarfile
-import io
-from pathlib import Path
 from collections import defaultdict
+from pathlib import Path
+
 import numpy as np
 
 base = Path("/workspace/dl_six")
@@ -27,9 +28,7 @@ with tarfile.open(src) as tar:
                 selected[p].append(int(row["window_idx"]))
     for n, (p, entry) in enumerate(expected.items(), 1):
         valid = np.array(sorted(selected[p]), dtype=np.int64)
-        picked = valid[
-            np.linspace(0, len(valid) - 1, min(128, len(valid)), dtype=np.int64)
-        ]
+        picked = valid[np.linspace(0, len(valid) - 1, min(128, len(valid)), dtype=np.int64)]
         if picked.tolist() != entry["indices"]:
             raise RuntimeError("selected indices mismatch")
         with tar.extractfile(f"segments/{p}.npy") as stream:

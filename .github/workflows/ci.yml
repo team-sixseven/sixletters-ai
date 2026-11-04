@@ -70,7 +70,7 @@ jobs:
           version: "0.9.26"
           enable-cache: true
       - run: uv sync --project Global --locked --extra ecg
-      - run: uv run --project Global --locked --no-sync pytest -c Global/pyproject.toml -q
+      - run: uv run --project Global --locked --no-sync pytest -c Global/pyproject.toml Global/tests -q
       - run: uv run --project Global --locked --no-sync python Global/scripts/smoke_check.py --ecg
 
   compatibility:
@@ -94,7 +94,7 @@ jobs:
           FULL: ${{ github.event_name == 'workflow_dispatch' || github.base_ref == 'main' }}
         run: |
           if [[ "$FULL" == true ]]; then
-            uv run --project Global --locked --no-sync pytest -c Global/pyproject.toml -q
+            uv run --project Global --locked --no-sync pytest -c Global/pyproject.toml Global/tests -q
           else
             uv run --project Global --locked --no-sync pytest -c Global/pyproject.toml Global/tests/test_personal_env.py Global/tests/test_personal_env_publication.py Global/tests/test_notebook_workspace.py Global/tests/test_notebook_environment.py Global/tests/test_upload.py -q
           fi

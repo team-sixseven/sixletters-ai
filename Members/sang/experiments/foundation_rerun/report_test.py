@@ -3,9 +3,10 @@
 import csv
 import json
 from pathlib import Path
+
 from pptx import Presentation
-from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
+from pptx.util import Inches, Pt
 
 ROOT = Path(__file__).resolve().parents[4]
 BASE = ROOT / "Members/sang/results/foundation_rerun_20261103"
@@ -33,12 +34,8 @@ for n, name, title in specs:
     v = data["splits"]["validation"] if name == "ecg_fm" else data["validation"]
     rows = list(csv.DictReader((d / "validation.csv").open()))
     positives = sum(int(r["scd_4year_label"]) for r in rows)
-    vtp = sum(
-        int(r["scd_4year_label"]) and float(r["model_score"]) >= 0.5 for r in rows
-    )
-    vtn = sum(
-        not int(r["scd_4year_label"]) and float(r["model_score"]) < 0.5 for r in rows
-    )
+    vtp = sum(int(r["scd_4year_label"]) and float(r["model_score"]) >= 0.5 for r in rows)
+    vtn = sum(not int(r["scd_4year_label"]) and float(r["model_score"]) < 0.5 for r in rows)
     c = m["confusion"]
     lines.append(
         f"| {title} | {m['auroc']:.3f} | {m['average_precision']:.3f} | {m['sensitivity']:.1%} | {m['specificity']:.1%} | {c['tn']} / {c['fp']} / {c['fn']} / {c['tp']} |"
@@ -92,9 +89,7 @@ for n, name, title in specs:
                 p.font.size = Pt(11)
                 p.font.bold = i == 0
                 p.font.color.rgb = RGBColor.from_string("202936")
-    note = slide.shapes.add_textbox(
-        Inches(0.7), Inches(6.72), Inches(5.75), Inches(0.38)
-    )
+    note = slide.shapes.add_textbox(Inches(0.7), Inches(6.72), Inches(5.75), Inches(0.38))
     p = note.text_frame.paragraphs[0]
     p.text = "Test: 이전 실험에 사용됨 · 독립 최종 검증 아님"
     p.font.name = "NanumGothic"

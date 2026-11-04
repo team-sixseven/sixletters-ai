@@ -3,14 +3,15 @@ import csv
 import json
 import os
 from pathlib import Path
+
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from pptx import Presentation
-from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE_TYPE
+from pptx.util import Inches, Pt
 
 base = Path("/workspace/dl_six")
 state = json.loads((base / "six_search/status.json").read_text())
@@ -91,9 +92,7 @@ for name, title in names.items():
         sh._element.getparent().remove(sh._element)
     for sh in template.shapes:
         if sh.shape_type != MSO_SHAPE_TYPE.PICTURE:
-            slide.shapes._spTree.insert_element_before(
-                copy.deepcopy(sh._element), "p:extLst"
-            )
+            slide.shapes._spTree.insert_element_before(copy.deepcopy(sh._element), "p:extLst")
     ts = [x for x in slide.shapes if x.has_text_frame]
     settext(ts[0], title + " · 추가 실험", 28)
     settext(

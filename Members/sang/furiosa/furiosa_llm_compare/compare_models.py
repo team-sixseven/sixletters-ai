@@ -6,7 +6,7 @@ import hashlib
 import io
 import json
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from furiosa_llm import LLM, SamplingParams
@@ -98,7 +98,7 @@ def main(args):
         "template": cfg["template"],
         "structured_output": "json_schema",
         "input_sha256": hashlib.sha256(raw).hexdigest(),
-        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "created_utc": datetime.now(UTC).isoformat(),
         "input_metadata": data["metadata"],
         "caveat": "research only; outputs uncalibrated; comparison uses previously examined development data",
     }

@@ -4,3 +4,4 @@ catboost
 scipy
 seaborn
 shap
+torch>=2.13.0

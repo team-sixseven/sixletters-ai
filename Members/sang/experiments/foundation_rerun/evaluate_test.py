@@ -32,9 +32,9 @@ def load_module(path):
 
 
 def deep_test_groups(module):
-    from scipy.signal import resample_poly
     from Members.sang.model.config import load_basic_config
     from Members.sang.model.DL.dataloader.raw_waveform import load_raw_cohort
+    from scipy.signal import resample_poly
 
     config_path = ROOT / "Members/sang/model/basic.yaml"
     config = load_basic_config(config_path)
@@ -47,9 +47,7 @@ def deep_test_groups(module):
         source = np.load(row.ecg_path, mmap_mode="r", allow_pickle=False)
         windows = np.stack(
             [
-                np.asarray(
-                    source[int(i) * 6000 : int(i) * 6000 + 2000], dtype=np.float32
-                ).T
+                np.asarray(source[int(i) * 6000 : int(i) * 6000 + 2000], dtype=np.float32).T
                 for i in chosen
             ]
         )
@@ -80,17 +78,11 @@ def fm_predict(model, patients, device):
             per_record = []
             for record in patient["records"]:
                 logits = []
-                for batch in np.array_split(
-                    record, max(1, int(np.ceil(len(record) / 4)))
-                ):
-                    logits.extend(
-                        model(torch.from_numpy(batch).to(device)).cpu().tolist()
-                    )
+                for batch in np.array_split(record, max(1, int(np.ceil(len(record) / 4)))):
+                    logits.extend(model(torch.from_numpy(batch).to(device)).cpu().tolist())
                 per_record.append(float(np.mean(logits)))
             score = float(torch.sigmoid(torch.tensor(np.mean(per_record))).item())
-            rows.append(
-                {"scd_4year_label": int(patient["label"]), "model_score": score}
-            )
+            rows.append({"scd_4year_label": int(patient["label"]), "model_score": score})
     return rows
 
 
@@ -108,9 +100,7 @@ def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     if device != "cuda":
         raise RuntimeError("CUDA required")
-    checkpoint = torch.load(
-        out / "best_adapter.pt", map_location=device, weights_only=True
-    )
+    checkpoint = torch.load(out / "best_adapter.pt", map_location=device, weights_only=True)
     if kind == "fm":
         mod = load_module(ROOT / "Members/sang/experiments/ecg_fm/train_adapter.py")
         model = mod.AdapterModel(ROOT / ".poc-cache/ecg-fm/finetuned.pt").to(device)
@@ -142,12 +132,7 @@ def main():
         rows, _ = mod.predict(model, deep_test_groups(mod), device, 4)
     y = np.array([int(r["scd_4year_label"]) for r in rows])
     p = np.array([float(r["model_score"]) for r in rows])
-    if (
-        len(y) != 89
-        or sum(y) != 10
-        or not np.isfinite(p).all()
-        or not ((p >= 0) & (p <= 1)).all()
-    ):
+    if len(y) != 89 or sum(y) != 10 or not np.isfinite(p).all() or not ((p >= 0) & (p <= 1)).all():
         raise ValueError("invalid test data or predictions")
     tn, fp, fn, tp = map(int, confusion_matrix(y, p >= 0.5, labels=[0, 1]).ravel())
     m = {

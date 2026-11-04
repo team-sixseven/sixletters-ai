@@ -76,17 +76,11 @@ else:
                 record_logits = []
                 for record in patient["records"]:
                     logits = []
-                    for batch in np.array_split(
-                        record, max(1, int(np.ceil(len(record) / 4)))
-                    ):
-                        logits.extend(
-                            model(torch.from_numpy(batch).to(device)).cpu().tolist()
-                        )
+                    for batch in np.array_split(record, max(1, int(np.ceil(len(record) / 4)))):
+                        logits.extend(model(torch.from_numpy(batch).to(device)).cpu().tolist())
                     record_logits.append(float(np.mean(logits)))
                 labels.append(int(patient["label"]))
-                scores.append(
-                    float(torch.sigmoid(torch.tensor(np.mean(record_logits))).item())
-                )
+                scores.append(float(torch.sigmoid(torch.tensor(np.mean(record_logits))).item()))
         y, p = np.array(labels), np.array(scores)
         tn, fp, fn, tp = confusion_matrix(y, p >= 0.5, labels=[0, 1]).ravel()
         result = {
@@ -106,7 +100,7 @@ else:
             with (output / "validation.csv").open("w", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow(["scd_4year_label", "model_score"])
-                writer.writerows(zip(y, p))
+                writer.writerows(zip(y, p, strict=False))
             (output / "validation.csv").chmod(0o600)
         return result
 

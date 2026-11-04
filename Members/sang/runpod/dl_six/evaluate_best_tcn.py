@@ -1,11 +1,12 @@
+import json
 import os
 import sys
-import json
 import traceback
 from pathlib import Path
-import yaml
+
 import numpy as np
 import pandas as pd
+import yaml
 
 base = Path("/workspace/dl_six")
 repo = base / "repo"
@@ -64,19 +65,13 @@ for name in selected:
         cfg = output / f"{name}_evaluation.yaml"
         cfg.write_text(yaml.safe_dump(e, sort_keys=False))
         val = evaluate_saved_model(cfg, run_id="validation_check")
-        old = pd.read_csv(
-            artifact / "validation_predictions.csv", dtype={"patient_id": str}
-        )
+        old = pd.read_csv(artifact / "validation_predictions.csv", dtype={"patient_id": str})
         new = pd.read_csv(val / "predictions.csv", dtype={"patient_id": str})
-        both = old.merge(
-            new, on="patient_id", validate="one_to_one", suffixes=("_old", "_new")
-        )
+        both = old.merge(new, on="patient_id", validate="one_to_one", suffixes=("_old", "_new"))
         if len(both) != len(old) or len(both) != len(new):
             raise RuntimeError("validation cohort mismatch")
         delta = float(np.max(np.abs(both.p_positive_old - both.p_positive_new)))
-        print(
-            "VALIDATION_REPRO", name, "n", len(both), "max_abs_delta", delta, flush=True
-        )
+        print("VALIDATION_REPRO", name, "n", len(both), "max_abs_delta", delta, flush=True)
         if delta > 1e-3:
             raise RuntimeError("validation scores did not reproduce within 0.001")
         test = evaluate_saved_model(cfg, split_override="test", run_id="test")
