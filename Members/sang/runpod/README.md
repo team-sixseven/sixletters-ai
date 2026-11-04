@@ -4,7 +4,7 @@ RunPod GPU 서버에서 실행하려고 만든 코드를 모았다. 로컬에서
 
 | 경로 | 내용 |
 | --- | --- |
-| [`runpod_tcn_optuna/`](runpod_tcn_optuna/) | ECG-only DL 여섯 조합의 Optuna 탐색, 전송·동기화·자동 중지 보조 도구 |
+| [`dl_optuna_search/`](dl_optuna_search/) | ECG-only DL 여섯 조합의 Optuna 탐색, 전송·동기화·자동 중지 보조 도구 |
 | [`dl_six/`](dl_six/) | 서버(`/workspace/dl_six`)에서 실행한 재시도·test 평가·결과 보고 스크립트 |
 
 ## 사용 시 주의

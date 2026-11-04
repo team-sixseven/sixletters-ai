@@ -171,6 +171,6 @@
 ## 결과 위치와 재현
 
 - 비공개 로컬 결과: `Members/sang/results/runpod_tcn_20261101/output/` 아래의 `study*` 디렉터리. 각 trial에 checkpoint, validation metrics, history, 모델 설정 snapshot과 data audit이 있다. 환자별 결과가 포함되므로 공유할 때 주의한다.
-- 실행 및 탐색 설정: `Members/sang/runpod/runpod_tcn_optuna/`의 `run.py`, `multi_study.py`, `search_space.yaml`, `multi_search.yaml`. 단, 실행 중 batch가 변경됐으므로 정확한 재현에는 각 trial의 `resolved_config.yaml`을 사용한다.
+- 실행 및 탐색 설정: `Members/sang/runpod/dl_optuna_search/`의 `run.py`, `multi_study.py`, `search_space.yaml`, `multi_search.yaml`. 단, 실행 중 batch가 변경됐으므로 정확한 재현에는 각 trial의 `resolved_config.yaml`을 사용한다.
 - 로컬 MLflow 실험: [sang-scd-ml](http://127.0.0.1:5000/#/experiments/1). 6개 대표 학습 run은 모두 `FINISHED`로 기록됐다. localhost 주소이므로 해당 서버에 접근 가능한 환경에서 열어야 한다.
 - 이 보고서는 로컬에 회수된 `multi_selected.json`, trial별 `metrics.json`, `metadata.json`, `resolved_config.yaml`, `study.sqlite3`, MLflow 상태 파일을 기준으로 작성했다. 임의로 생성된 지표나 test 결과는 포함하지 않았다.

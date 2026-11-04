@@ -9,7 +9,7 @@
 실행 전 원격 GPU와 Python/Optuna, 지정된 Holter 디렉터리 접근 및 저장 공간을 확인해야 한다. 다음은 **실행 예시이지 실행 결과가 아니다**. 예산과 버전 해석을 확정한 뒤 고유 output 경로를 지정한다. 환자별 CSV와 audit이 생성되므로 비공개 경로를 사용하고 외부 전송 여부를 확인한다.
 
 ```bash
-python Members/sang/runpod/runpod_tcn_optuna/run.py \
+python Members/sang/runpod/dl_optuna_search/run.py \
   --data-root /path/to/datas --output /private/new/run-directory \
   --trials 8 --epochs 100 --patience 10
 ```

@@ -1,4 +1,4 @@
-> 정정: 이 문서의 첫 실행은 사용자가 지정한 임상 원본이 아닌 `model/ML/data`의 다른 파일을 사용했다. 사용자가 지정한 `datas/clincal` 파일과 분할로 재실행한 최종 결과는 [수정 실험 기록](furiosa_qwen32b_clincal_comparison_20261102.md)을 참고한다. 아래는 첫 실행의 이력이다.
+> 정정: 이 문서의 첫 실행은 사용자가 지정한 임상 원본이 아닌 `model/ML/data`의 다른 파일을 사용했다. 사용자가 지정한 `datas/clincal` 파일과 분할로 재실행한 최종 결과는 [수정 실험 기록](furiosa_qwen32b_clinical_comparison_20261102.md)을 참고한다. 아래는 첫 실행의 이력이다.
 
 # Qwen3-32B Holter·임상·학습 사례 비교 (연구용)
 

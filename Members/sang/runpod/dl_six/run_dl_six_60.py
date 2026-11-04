@@ -3,13 +3,13 @@ import json,os,sys,traceback,subprocess
 from pathlib import Path
 import optuna,yaml
 from optuna.trial import TrialState
-base=Path('/workspace/dl_six');repo=base/'repo'; sys.path[:0]=[str(repo),str(repo/'Members/sang/runpod/runpod_tcn_optuna')]
-from Members.sang.runpod.runpod_tcn_optuna.multi_study import COMBINATIONS,write_configs
+base=Path('/workspace/dl_six');repo=base/'repo'; sys.path[:0]=[str(repo),str(repo/'Members/sang/runpod/dl_optuna_search')]
+from Members.sang.runpod.dl_optuna_search.multi_study import COMBINATIONS,write_configs
 from Members.sang.model.DL.raw_pipeline import train_raw_ecg
 from Members.sang.model.evaluation.evaluation import evaluate_saved_model
 os.umask(0o077)
 out=base/'six_search';out.mkdir(mode=0o700,exist_ok=True)
-search=yaml.safe_load((repo/'Members/sang/runpod/runpod_tcn_optuna/multi_search.yaml').read_text())['search']
+search=yaml.safe_load((repo/'Members/sang/runpod/dl_optuna_search/multi_search.yaml').read_text())['search']
 samplers={name:optuna.samplers.TPESampler(seed=20261105+i) for i,(name,_,_) in enumerate(COMBINATIONS)}
 status_path=out/'status.json'; state={'criteria':'epochs >= 60; early stopping patience 10; validation-loss checkpoint; fixed threshold 0.5; historical test reuse','combinations':{}}
 def save():

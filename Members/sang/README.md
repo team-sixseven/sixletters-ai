@@ -2,7 +2,7 @@
 
 ## 제출 코드 안내
 
-- **DL 학습·평가:** [`model/DL/`](model/DL/)과 [`model/evaluation/`](model/evaluation/). RunPod에서 수행한 여섯 조합의 탐색 코드는 [`runpod/runpod_tcn_optuna/`](runpod/runpod_tcn_optuna/), 서버 재시도·test 평가 스크립트는 [`runpod/dl_six/`](runpod/dl_six/)(전체 안내는 [`runpod/README.md`](runpod/README.md)), 설정·조합 기록은 [`docs/runpod_60_trial_parameters_20261103.md`](docs/runpod_60_trial_parameters_20261103.md)에 있다.
+- **DL 학습·평가:** [`model/DL/`](model/DL/)과 [`model/evaluation/`](model/evaluation/). RunPod에서 수행한 여섯 조합의 탐색 코드는 [`runpod/dl_optuna_search/`](runpod/dl_optuna_search/), 서버 재시도·test 평가 스크립트는 [`runpod/dl_six/`](runpod/dl_six/)(전체 안내는 [`runpod/README.md`](runpod/README.md)), 설정·조합 기록은 [`docs/runpod_60_trial_parameters_20261103.md`](docs/runpod_60_trial_parameters_20261103.md)에 있다.
 - **ECG 파운데이션 모델:** [`experiments/ecg_fm/`](experiments/ecg_fm/)과 [`experiments/ecgfounder/`](experiments/ecgfounder/).
 - **외부 API LLM:** [`notebooks/monorouter_holter_experiment.ipynb`](notebooks/monorouter_holter_experiment.ipynb), [`experiments/monorouter_holter/`](experiments/monorouter_holter/). 설정의 `run_live`는 실제 외부 API 호출 및 데이터 전송을 수행하므로 실행 전 설정과 승인을 확인한다. 키는 환경 변수로 제공한다.
 - **Furiosa LLM 비교:** [`furiosa/furiosa_llm_compare/`](furiosa/furiosa_llm_compare/)와 `furiosa/notebooks/furiosa_*.ipynb`. 30초 요약 비교는 `prepare_all_30s.py`, `prepare_summary30.py`, `compare_models.py`, `report_summary30.py` 순서로 실행한다. 사전 컴파일 모델과 Furiosa 런타임이 필요하다.
