@@ -1,0 +1,16 @@
+# Additional packages for Members/mingyu code; install with `./dev env add` / `./dev env sync Members/mingyu`.
+# ML (model/ML): tree models and Optuna tuning
+xgboost
+catboost
+optuna
+# Preprocessing (preprocessing/): Holter filtering, R peaks, progress bar
+scipy
+wfdb
+neurokit2
+tqdm
+# MOMENT (model/finetuning): GPU 권장, CUDA 버전에 맞는 torch
+torch
+momentfm
+# Earlier analysis
+seaborn
+shap

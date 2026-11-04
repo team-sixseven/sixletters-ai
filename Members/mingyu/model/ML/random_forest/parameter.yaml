@@ -1,0 +1,9 @@
+model_path: ../models/20261028T010640Z_random_forest_v4_c31f04b0/best_model.joblib
+model:
+  n_estimators: 500
+  min_samples_leaf: 2
+  class_weight: balanced
+classification:
+  threshold: 0.5
+model_paths:
+  4: ../models/20261028T010640Z_random_forest_v4_c31f04b0/best_model.joblib
