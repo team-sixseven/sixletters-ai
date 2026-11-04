@@ -6,6 +6,8 @@ experiment:
   sample_seed: 42
   threshold: 0.5
   run_live: true
+  reuse_predictions_dir: Members/sang/results/monorouter_holter/20261104T061240Z_c3ebfc23
+  reuse_features_file: Members/sang/results/monorouter_holter/features_20261104T061239Z_49d29b14/features_by_patient.json
 clinical:
   method_validation_confirmed: true
   chunk_seconds: 300
